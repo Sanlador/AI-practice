@@ -1,5 +1,5 @@
 #This program implements the RDFS and IDA* to solve a 15 puzzle
-
+import random
 import numpy as np
 
 class game:
@@ -18,7 +18,6 @@ class game:
 			for j in range(4):
 				self.board[i][j] = count
 				count += 1
-		np.random.shuffle(self.board)
 		
 	#locates the index for zero for the purposes of playing the game
 	def findZero(self):
@@ -42,6 +41,7 @@ class game:
 		self.board[position] = self.board[move]
 		self.board[move] = 0
 		print(self.board)
+		return True
 		
 	def goalTest(self):
 		count = 1
@@ -52,6 +52,15 @@ class game:
 				elif self.board[i][j] != count:
 					return False
 				count += 1
+				
+	def scramble(self, m):
+		compass = ["up", "down", "left", "right"]
+		for i in range(m):
+			control = False
+			while control == False:
+				if self.move(compass[random.randint(0,3)]):
+					control = True
 		
 
 x = game()
+x.scramble(10)
