@@ -3,6 +3,7 @@ import random
 import numpy as np
 
 class game:
+	position = [3,3]
 	board = np.zeros((4,4))
 	direction = {
 		"up": (-1, 0),
@@ -20,37 +21,34 @@ class game:
 				count += 1
 		self.board[3][3] = 0
 		
-	#locates the index for zero for the purposes of playing the game
-	def findZero(self):
-		loc = np.where(self.board == 0)
-		return (loc[0],loc[1])
-		
 	#returns a board position for a given a move
 	def move(self, direction):
-		board = self.board
-		position  = self.findZero()
-		move = (position[0] + self.direction[direction][0], position[1] + self.direction[direction][1])
+		board = np.copy(self.board)
+		position = np.copy(self.position)
+		
 		#check for illegal moves
 		if position[0] == 0 and direction == "up":
-			return None
+			return []
 		if position[0] == 3 and direction == "down":
-			return None
+			return []
 		if position[1] == 0 and direction == "left":
-			return None
+			return []
 		if position[1] == 3 and direction == "right":
-			return None
-		
-		board[position] = board[move]
-		board[move] = 0
-		return board
-
+			return []
+			
+		move = [position[0] + self.direction[direction][0], position[1] + self.direction[direction][1]]
+		board[position[0]][position[1]] = board[move[0]][move[1]]
+		board[move[0]][move[1]] = 0
+		return board, move
+			
 	#executes a move on the board
 	def performMove(self, direction):
-		if self.move(direction) == None:
-			return False
-		else:
-			self.performMove(direction)
+		if self.move(direction) != []:
+			self.board, self.position = self.move(direction)
+			print(self.board)
 			return True
+		else:
+			return False
 		
 	#checks for sucessful board state
 	def goalTest(self):
@@ -71,7 +69,7 @@ class game:
 			while control == False:
 				if self.performMove(compass[random.randint(0,3)]):
 					control = True
-					print(self.board)
+					print("***")
 
 #measures a manhattan heuristic	of a given board position			
 def manhattan(game):
@@ -91,6 +89,5 @@ def manhattan(game):
 	return h
 
 x = game()
-print(x.board)
-x.scramble(10)
-print(manhattan(x))
+#x.scramble(10)
+#print(manhattan(x))
