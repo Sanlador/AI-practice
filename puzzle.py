@@ -133,7 +133,7 @@ def IDASearch(path, g, bound):
 def RBFS(board, fLimit):
 	fn = manhattan(board)
 	if goalTest(board):
-		return "success", board
+		return "success", manhattan(board)
 	choice = []
 	for i in range(4):
 		if move(board, compass[i]) != []:
@@ -153,13 +153,13 @@ def RBFS(board, fLimit):
 	while control == True:
 		#print(succ)
 		best = succ[0][0]
-		#print(best)
+		#print(manhattan(best))
 		alt = succ[1][0]
 		if manhattan(best) > fLimit:
-			return "Fail", best
+			return "Fail", manhattan(best)
 		result, best = RBFS(best, min(fLimit, manhattan(alt)))
 		if result == "success":
-			return result, best
+			return result, (best)
 			control = False
 
 
