@@ -211,12 +211,10 @@ class assignment:
 							count = 0
 							for x in range(3):
 								for y in range(3):
-									i = 0
-							
+									fgfi = 0
 							if controlRow or controlCol or controlBox:
 								hidden = True
 							if controlRow == True:
-								print(self.domain[i][j][z])
 								self.domain[i][j] = [self.domain[i][j][d], self.domain[i][j][z]]
 								self.domain[commonRow[0][0]][commonRow[0][1]] = [self.domain[i][j][0], self.domain[i][j][1]]
 							commonRow = []
@@ -251,7 +249,7 @@ def backtrackSearch(assign, board, varRow, varCol, MCV = False):
 		
 	
 easy, medium, hard, evil = readPuzzleFile("sudoku-problems.txt")
-assign = assignment(easy[0])
+assign = assignment(easy[2])
 for i in range(9):
 	print(assign.domain[i])
 assign.hiddenPairs()
