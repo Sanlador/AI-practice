@@ -106,31 +106,32 @@ class assignment:
 			self.domain.append([[],[],[],[],[],[],[],[],[]])
 			for j in range(9):
 				self.domain[i][j] = alldiff(board, i, j)
-				#will automatically account for naked singles
-				if len(self.domain[i][j]) == 1:
-					self.board[i][j] = self.domain[i][j][0]
 	
 	def makeAssignment(self, row, col, assignment):
 		self.board[row][col] = assignment
-		
-	def updateDomain(self):
-		for i in range(9):
-			for j in range(9):
-				self.domain[i][j] = alldiff(self.board, i, j)
-				if len(self.domain[i][j]) == 1:
-					self.board[i][j] = self.domain[i][j][0]
+		self.domain[row][col] = [0]
 
 	def assignmentComplete(self):
 		for i in range(9):
 			for j in range(9):
-				if len(self.domain[i][j]) != 1:
+				if (self.domain[i][j]) != [0]:
 					return False
 		return True
 	
-	def hiddenSingle(self):
+	def nakedSingle(self):
+		control = False
 		for i in range(9):
 			for j in range(9):
-			
+				if len(self.domain[i][j]) == 1 and self.domain[i][j] != [0]:
+					makeAssignment(i,j, self.domain[i][j][0])
+					control = True
+		return control
+	
+	def hiddenSingle(self):
+		hidden = False
+		for i in range(9):
+			for j in range(9):
+				#determine square
 				if i < 3:
 					squareRow = 0
 				elif i < 6:
@@ -162,6 +163,81 @@ class assignment:
 								
 					if controlRow or controlCol or controlBox:
 						self.makeAssignment(i,j, d)
+						hidden = True
+						
+		return hidden
+		
+	#def nakedN(self, n):
+		
+	def hiddenPairs(self):
+		hidden = False
+		for i in range(9):
+			for j in range(9):
+				#determine square
+				if i < 3:
+					squareRow = 0
+				elif i < 6:
+					squareRow = 3
+				else:
+					squareRow = 6
+				if j < 3:
+					squareCol = 0
+				elif j < 6:
+					squareCol = 3
+				else:
+					squareCol = 6
+				
+				for d in range(0, len(self.domain[i][j]) - 1):
+					controlRow = False
+					controlCol = False
+					controlBox = False
+					for z in range(d + 1, len(self.domain[i][j]) - 1):
+						commonRow = []
+						commonCol = []
+						commonBox = []
+						
+						count = 0
+						if controlRow == False:
+							for x in range(9):
+								if self.domain[i][j][d] in self.domain[i][x] and self.domain[i][j][z] in self.domain[i][x] and x != j:
+									count += 1
+									if count < 2:
+										commonRow.append([i, x, self.domain[i][j][d], self.domain[i][j][z]])
+									else:
+										commonRow = []
+							if count == 1:
+								controlRow = True
+							
+							count = 0
+							for x in range(3):
+								for y in range(3):
+									i = 0
+							
+							if controlRow or controlCol or controlBox:
+								hidden = True
+							if controlRow == True:
+								print(self.domain[i][j][z])
+								self.domain[i][j] = [self.domain[i][j][d], self.domain[i][j][z]]
+								self.domain[commonRow[0][0]][commonRow[0][1]] = [self.domain[i][j][0], self.domain[i][j][1]]
+							commonRow = []
+		
+	def inference(self):
+		control = False
+		while control == False:
+			nakedS = self.nakedSingle()
+			hiddenS = self.hiddenSingle()
+			if hiddenS == False:
+				#nakedP = self.nakedPairs()
+				#if nakedP == False:
+					#hiddenP = self.hiddenPairs()
+					#if hiddenP == False:
+						#nakedT = self.nakedTriples()
+						#if nakedT == False:
+							#hiddenT = self.hiddenTriples()
+							#if hiddenT == False:
+								#
+				control = True
+		
 		
 
 def backtrackSearch(assign, board, varRow, varCol, MCV = False):
@@ -172,10 +248,15 @@ def backtrackSearch(assign, board, varRow, varCol, MCV = False):
 	for i in assign.domain[varRow][varCol]:
 		tempAssign = assign
 		tempAssign.makeAssignment(varRow, varCol, i)
-		tempAssign.updateDomain()
 		
 	
 easy, medium, hard, evil = readPuzzleFile("sudoku-problems.txt")
 assign = assignment(easy[0])
-assign.hiddenSingle()
-print(assign.board)
+for i in range(9):
+	print(assign.domain[i])
+assign.hiddenPairs()
+print("XXX")
+for i in range(9):
+	print(assign.domain[i])
+#assign.inference()
+#print(assign.board)
