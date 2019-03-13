@@ -1,0 +1,68 @@
+﻿<Window x:Class="TakBrain.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TakBrain"
+        mc:Ignorable="d"
+        Title="TakBrain" Height="400" Width="800"
+        Loaded="Window_Loaded"
+        Background="LightGray" Icon="/TakBrain;Component/Images/icon.png">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="600" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label x:Name="lblError" Background="Red" Grid.Row="0" Grid.ColumnSpan="3" HorizontalContentAlignment="Center" Visibility="Collapsed">Error messages go here</Label>
+
+            <Grid Grid.Row="1" Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <CheckBox x:Name="chkWhiteIsAI" Content="AI Player 1" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Checked="chkWhiteIsAI_Checked" Unchecked="chkWhiteIsAI_Unchecked"/>
+                <CheckBox x:Name="chkBlackIsAI" Content="AI Player 2" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" Checked="chkBlackIsAI_Checked" Unchecked="chkBlackIsAI_Unchecked"/>
+                <Button x:Name="btnStart" Content="Start Game" Grid.Column="1" HorizontalAlignment="Center" Click="btnStart_Click" Width="75"/>
+            </Grid>
+
+            <TextBox AcceptsReturn="True" IsReadOnly="True" x:Name="txtWhiteMoves" Grid.Row="2" Grid.Column="0" Background="#d4be8c" BorderBrush="#d4be8c" Foreground="Black" FontFamily="Courier New" />
+            <TextBox AcceptsReturn="True" IsReadOnly="True" x:Name="txtBlackMoves" Grid.Row="2" Grid.Column="2" Background="#7f7154" BorderBrush="#7f7154" Foreground="White" FontFamily="Courier New" />
+            <Image Stretch="Uniform" x:Name="imgBoard" Grid.Row="2" Grid.Column="1"/>
+
+            <Grid Grid.Row="3" Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="txtWhiteMove" Grid.Column="0" HorizontalAlignment="Center" MinWidth="75" IsEnabled="False" TextChanged="MoveInput_TextChanged" />
+                <TextBox x:Name="txtBlackMove" Grid.Column="2" HorizontalAlignment="Center" MinWidth="75" IsEnabled="False" TextChanged="MoveInput_TextChanged"/>
+                <Button x:Name="btnSubmit" Content="Confirm Move" IsDefault="True" Grid.Column="1" IsEnabled="False" Click="btnSubmit_Click"/>
+            </Grid>
+        </Grid>
+
+        <ScrollViewer Grid.Column="1">
+            <StackPanel x:Name="DebugTrace" Orientation="Vertical" HorizontalAlignment="Left"/>
+        </ScrollViewer>
+    </Grid>
+</Window>

@@ -1,0 +1,8 @@
+C:\Users\Admin\documents\visual studio 2013\Projects\tak\ConsoleTest\bin\Release\ConsoleTest.exe.config
+C:\Users\Admin\documents\visual studio 2013\Projects\tak\ConsoleTest\bin\Release\ConsoleTest.exe
+C:\Users\Admin\documents\visual studio 2013\Projects\tak\ConsoleTest\bin\Release\ConsoleTest.pdb
+C:\Users\Admin\documents\visual studio 2013\Projects\tak\ConsoleTest\bin\Release\TakEngine.dll
+C:\Users\Admin\documents\visual studio 2013\Projects\tak\ConsoleTest\bin\Release\TakEngine.pdb
+C:\Users\Admin\documents\visual studio 2013\Projects\tak\ConsoleTest\obj\Release\ConsoleTest.csprojResolveAssemblyReference.cache
+C:\Users\Admin\documents\visual studio 2013\Projects\tak\ConsoleTest\obj\Release\ConsoleTest.exe
+C:\Users\Admin\documents\visual studio 2013\Projects\tak\ConsoleTest\obj\Release\ConsoleTest.pdb

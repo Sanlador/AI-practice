@@ -1,0 +1,1 @@
+C:\BigData\Projects\tak\RTak\bin\Debug\RTak.exe.config

@@ -1,0 +1,9 @@
+C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakEngine\bin\Release\TakEngine.dll.config
+C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakEngine\bin\Release\TakEngine.dll
+C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakEngine\bin\Release\TakEngine.pdb
+C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakEngine\bin\Release\Antlr4.Runtime.dll
+C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakEngine\obj\Release\TakEngine.csprojAssemblyReference.cache
+C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakEngine\obj\Release\TakEngine.csproj.CoreCompileInputs.cache
+C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakEngine\obj\Release\TakEngine.csproj.CopyComplete
+C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakEngine\obj\Release\TakEngine.dll
+C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakEngine\obj\Release\TakEngine.pdb
