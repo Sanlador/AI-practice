@@ -171,20 +171,29 @@ namespace TakConsole
             return root.legalMoves[winIndex].Notate();
         }
 
-        public int maxLen(GameState inputState)
+        public int evaluate(MCNode node)
         {
-            GameState state = inputState.DeepCopy();
+            GameState state = node.state.DeepCopy();
+            //bool[,] checkedSpaces = new bool[state.Size, state.Size];
+            int len = 0;
+            
+            //Find the longest road made by the current player
+            //still under construction
+            /*
             for (int i = 0; i < state.Size; i++)
             {
                 for (int j = 0; j < state.Size; j++)
                 {
-                    //Console.WriteLine(i.ToString() + "," + j.ToString() + ":\n");
-                    foreach (int p in state.Board[i,j])
+                    var piece = state.Board[i, j][state.Board[i, j].Count - 1];
+                    if (Piece.GetStone(piece) == Piece.Stone_Flat)
                     {
-                        //Console.WriteLine(p);
+                        if ((Piece.GetPlayerID(piece) == 1 && !node.player) || (Piece.GetPlayerID(piece) == 0 && node.player))
+                        {
+                            
+                        }
                     }
                 }
-            }
+            }*/
 
             return 0;
         }
