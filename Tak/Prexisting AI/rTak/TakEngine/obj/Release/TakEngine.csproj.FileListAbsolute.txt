@@ -7,3 +7,11 @@ C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakEngine\obj\Release\
 C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakEngine\obj\Release\TakEngine.csproj.CopyComplete
 C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakEngine\obj\Release\TakEngine.dll
 C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakEngine\obj\Release\TakEngine.pdb
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakEngine\bin\Release\TakEngine.dll.config
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakEngine\bin\Release\TakEngine.dll
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakEngine\bin\Release\TakEngine.pdb
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakEngine\bin\Release\Antlr4.Runtime.dll
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakEngine\obj\Release\TakEngine.csprojResolveAssemblyReference.cache
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakEngine\obj\Release\TakEngine.csproj.CoreCompileInputs.cache
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakEngine\obj\Release\TakEngine.dll
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakEngine\obj\Release\TakEngine.pdb

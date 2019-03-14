@@ -188,6 +188,28 @@ namespace TakConsole
 
             return 0;
         }
+
+        bool changeRoot(GameState newState)
+        {
+            foreach (MCNode c in root.children)
+            {
+                if (c.state.Board == newState.Board)
+                {
+                    root = c;
+                    deleteParents(root);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        void deleteParents(MCNode newRoot)
+        {
+            if (newRoot.parent.parent != null)
+                deleteParents(newRoot.parent);
+            newRoot.parent = null;
+            return;
+        }
     }
 
     class MCNode

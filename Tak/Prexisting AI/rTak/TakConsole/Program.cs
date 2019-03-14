@@ -67,13 +67,13 @@ namespace TakConsole
                     else
                         Console.WriteLine("O wins");
                     for (int i = 0; i < game.Size; i++)
-                    {
+                    {/*
                         for (int j = 0; j < game.Size; j++)
                         {
                             Console.WriteLine("Space " + i.ToString() + "," + j.ToString());
                             foreach (int m in game.Board[i, j])
                                 Console.WriteLine(m);
-                        }
+                        }*/
                     }
                 }
                 Console.Write("[T{0}, {1}]: ", game.Ply, (game.Ply & 1) == 0 ? 'X' : 'O');
@@ -96,6 +96,7 @@ namespace TakConsole
                         MCTree tree = new MCTree(game);
                         Console.WriteLine(tree.maxLen(game));
                         cmd = tree.MCTS(100);
+
                         //Console.WriteLine("\nMCTree:" + cmd);
                     }
                     else

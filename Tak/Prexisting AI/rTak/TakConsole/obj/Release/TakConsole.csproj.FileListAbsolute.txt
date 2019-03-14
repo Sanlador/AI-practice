@@ -13,3 +13,15 @@ C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakConsole\obj\Release
 C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakConsole\obj\Release\TakConsole.csproj.CopyComplete
 C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakConsole\obj\Release\TakConsole.exe
 C:\Users\Sanlador\Documents\GitHub\Tak\Prexisting AI\rTak\TakConsole\obj\Release\TakConsole.pdb
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakConsole\bin\Release\example_notation.ptn
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakConsole\bin\Release\TakConsole.exe.config
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakConsole\bin\Release\TakConsole.exe
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakConsole\bin\Release\TakConsole.pdb
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakConsole\bin\Release\TakEngine.dll
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakConsole\bin\Release\Antlr4.Runtime.dll
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakConsole\bin\Release\TakEngine.pdb
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakConsole\bin\Release\TakEngine.dll.config
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakConsole\obj\Release\TakConsole.csprojResolveAssemblyReference.cache
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakConsole\obj\Release\TakConsole.csproj.CoreCompileInputs.cache
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakConsole\obj\Release\TakConsole.exe
+C:\Users\Volunteer\Documents\GitHub\AI-practice\Tak\Prexisting AI\rTak\TakConsole\obj\Release\TakConsole.pdb
