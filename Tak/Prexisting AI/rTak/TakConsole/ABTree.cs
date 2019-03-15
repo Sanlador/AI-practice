@@ -111,7 +111,7 @@ namespace TakConsole
             return positionValue;
         }
 
-        public float ABSearch(ABNode node, int ply, int depth)
+        public float ABSearch(ABNode node, int ply, int depth, float alpha = float.MinValue, float beta = float.MinValue)
         {
             if (ply > depth)
             {
@@ -123,8 +123,11 @@ namespace TakConsole
             var evaluator = ai.Evaluator;
             bool gameOver;
             int eval;
-            foreach (IMove m in moves)
+            int i = 0;
+
+            while (i < moves.Count)
             {
+                IMove m = moves[i];
                 ABNode n = new ABNode(!node.player, node.state);
                 TakEngine.Notation.MoveNotation notated;
                 TakEngine.Notation.MoveNotation.TryParse(m.Notate(), out notated);
@@ -140,14 +143,33 @@ namespace TakConsole
                      else
                          return -1000F;
                  }*/
-
-                evaluations.Add(ABSearch(n, ply + 1, depth));
+                float e = ABSearch(n, ply + 1, depth);
+                evaluations.Add(e);
+                if (node.player)    //max
+                {
+                    if (e > alpha)
+                        alpha = e;
+                    if (e > beta)
+                        return e;
+                }
+                if (!node.player)   //min
+                {
+                    if (e < beta)
+                        beta = e;
+                    if (e <= alpha)
+                        return e;
+                }
+                i++;
             }
 
             if (node.player)
+            {
                 return evaluations.Max();
+            }
             else
+            {
                 return evaluations.Min();
+            }
         }
 
         public string AB(int depth)
@@ -174,9 +196,7 @@ namespace TakConsole
                 {
                     return m.Notate();
                 }
-                Console.WriteLine("start");
                 evaluations.Add(ABSearch((new ABNode(!root.player, tempState)), 0, depth));
-                Console.WriteLine("end");
             }
             
 
@@ -208,7 +228,8 @@ namespace TakConsole
 
         public ABNode(bool turn, GameState game)
         {
-            player = turn;
+            //set to negate in order to place as "O" player against MCTS
+            player = !turn;     //Remove ! if playing as "X"
             state = game.DeepCopy();
         }
     }

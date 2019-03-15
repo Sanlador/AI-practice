@@ -49,6 +49,7 @@ namespace TakConsole
             var fullauto = new bool[] { false, false };
             fullauto[1] = true;
             var game = GameState.NewGame(5);
+            MCTree tree = new MCTree(game);
             var ai = new TakAI_V4(game.Size, maxDepth: 3);
             var evaluator = ai.Evaluator;
             bool gameOver;
@@ -84,8 +85,11 @@ namespace TakConsole
                 string cmd;
                 if (fullauto[game.Ply & 1] && !gameOver)
                 {
+                    ABTree ABTree = new ABTree(game);
+                    cmd = ABTree.AB(1);
+                    /*
                     cmd = "ai";
-                    Console.WriteLine(cmd);
+                    Console.WriteLine(cmd);*/
                 }
                 else
                 {
@@ -96,11 +100,13 @@ namespace TakConsole
                     evaluator.Evaluate(game, out eval, out gameOver);
                     if(!gameOver)
                     {
-                        /*MCTree tree = new MCTree(game);
+                        //check if current state exists in MCT. If so, move root node to maintain exploration records
+                        if (!tree.changeRoot(game))
+                            tree = new MCTree(game);
                         tree.evaluate(tree.root);
-                        cmd = tree.MCTS(20);*/
-                        ABTree tree = new ABTree(game);
-                        cmd = tree.AB(1);
+                        cmd = tree.MCTS(50);
+                        /*ABTree tree = new ABTree(game);
+                        cmd = tree.AB(1);*/
                         //Console.WriteLine("\nMCTree:" + cmd);
                     }
                     else

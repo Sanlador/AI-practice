@@ -286,7 +286,7 @@ namespace TakConsole
             return positionValue;
         }
 
-        bool changeRoot(GameState newState)
+        public bool changeRoot(GameState newState)
         {
             foreach (MCNode c in root.children)
             {
