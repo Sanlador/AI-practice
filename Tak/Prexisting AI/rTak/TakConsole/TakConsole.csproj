@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ABTree.cs" />
     <Compile Include="MCTree.cs" />
     <Compile Include="NonInteractiveTest.cs" />
     <Compile Include="Program.cs" />

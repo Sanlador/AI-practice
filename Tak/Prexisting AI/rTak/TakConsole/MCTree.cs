@@ -9,7 +9,7 @@ namespace TakConsole
 {
     class MCTree
     {
-        MCNode root;
+        public MCNode root;
         int eval = 0;
         bool gameOver;
 
@@ -104,21 +104,45 @@ namespace TakConsole
             var ai = new TakAI_V4(start.state.Size, maxDepth: 3);
             var evaluator = ai.Evaluator;
             List<IMove> moves = moveOptions(start.state);
+            Expand(start);
 
             //check for end of game
             evaluator.Evaluate(start.state, out eval, out gameOver);
             if (gameOver)
                 return !start.player;
 
+            List<float> evaluations = new List<float>();
             //random play
-            Random r = new Random();
-            int moveIndex = r.Next(moves.Count);
-            MCNode tempNode = start;
-            tempNode.player = !tempNode.player;
-            tempNode.state = start.state.DeepCopy();
+            for (int i = 0; i < moves.Count; i++ )
+            {
+                MCNode m = start.children[i];
+                float f = evaluate(m);
+                //Console.WriteLine(f);
+                if (f >= 0F)
+                    evaluations.Add(f);
+            }
 
+            if (evaluations.Count == 0)
+                return false;
+
+            float sum = evaluations.Sum();
+
+            Random r = new Random();
+            double selectValue = r.NextDouble();
+            float selection = 0F;
+            int moveIndex = 0;
+
+            while (selection < selectValue)
+            {
+                //Console.WriteLine(evaluations.Count.ToString() + "," + moveIndex.ToString());
+                selection += evaluations[moveIndex] / sum;
+                moveIndex++;
+            }
+            
+            MCNode tempNode = new MCNode(!start.player, start.state.DeepCopy());
             TakEngine.Notation.MoveNotation notated;
-            TakEngine.Notation.MoveNotation.TryParse(moves[moveIndex].Notate(), out notated);
+            //Console.WriteLine(moveIndex.ToString() + "," + evaluations.Count.ToString() + "," + moves.Count.ToString());
+            TakEngine.Notation.MoveNotation.TryParse(moves[moveIndex - 1].Notate(), out notated);
             var match = notated.MatchLegalMove(moves);
             match.MakeMove(tempNode.state);
             tempNode.state.Ply++;
@@ -144,7 +168,7 @@ namespace TakConsole
         //uses above functions to perform an n-play MTCS
         public string MCTS(int n)
         {
-            for(int i = 0; i < n; i++)
+            for (int i = 0; i < n; i++)
             {
                 MCNode chosen = Selection();
                 Expand(chosen);
@@ -156,9 +180,19 @@ namespace TakConsole
             int winIndex = 0;
             float maxPlays = 0;
 
-            //chooses highest win rate (still under construction)
-            for(int i = 0; i < root.legalMoves.Count; i++)
+            var ai = new TakAI_V4(root.state.Size, maxDepth: 0);
+            var evaluator = ai.Evaluator;
+            bool gameOver;
+            int eval;
+
+            //chooses highest win rate (or winning move if available)
+            for (int i = 0; i < root.children.Count; i++)
             {
+                evaluator.Evaluate(root.children[i].state, out eval, out gameOver);
+                if (gameOver)
+                {
+                    return root.legalMoves[i].Notate();
+                }
                 if (root.children[i].winRate() > maxWins)
                 {
                     if (root.children[i].plays > maxPlays)
@@ -171,31 +205,85 @@ namespace TakConsole
             return root.legalMoves[winIndex].Notate();
         }
 
-        public int evaluate(MCNode node)
+        public float evaluate(MCNode node)
         {
+            float positionValue = 0;
+            int flatCount = 0;
+            int highestCap = 0;
+            int maxCap = 0, maxCapEnemy = 0;
+            int losingState = 0;
+
+            //Set coefficient values here for ease of parameter tuning
+            float flatCo = 1F;
+            float capCo = 5F;
+            float lossCo = 1000F;
+
+            //check if position is one move away from an enemy win state
+            List<IMove> moves = moveOptions(node.state);
+            var ai = new TakAI_V4(root.state.Size, maxDepth: 0);
+            var evaluator = ai.Evaluator;
+            bool gameOver;
+            int eval;
+            TakEngine.Notation.MoveNotation notated;
             GameState state = node.state.DeepCopy();
-            //bool[,] checkedSpaces = new bool[state.Size, state.Size];
-            int len = 0;
-            
-            //Find the longest road made by the current player
-            //still under construction
-            /*
-            for (int i = 0; i < state.Size; i++)
+
+            foreach (var m in moves)
             {
-                for (int j = 0; j < state.Size; j++)
+                TakEngine.Notation.MoveNotation.TryParse(m.Notate(), out notated);
+                var match = notated.MatchLegalMove(moves);
+                match.MakeMove(state);
+                state.Ply++;
+                evaluator.Evaluate(state, out eval, out gameOver);
+                if (gameOver)
+                    losingState = 1;
+                m.TakeBackMove(state);
+            }
+
+            //count the number of flat stones
+            for (int i = 0; i < node.state.Size; i++)
+            {
+                for (int j = 0; j < node.state.Size; j++)
                 {
-                    var piece = state.Board[i, j][state.Board[i, j].Count - 1];
-                    if (Piece.GetStone(piece) == Piece.Stone_Flat)
+                    if (node.state.Board[i, j].Count > 0)
                     {
-                        if ((Piece.GetPlayerID(piece) == 1 && !node.player) || (Piece.GetPlayerID(piece) == 0 && node.player))
+                        var piece = node.state.Board[i, j][node.state.Board[i, j].Count - 1];
+                        if (Piece.GetStone(piece) == Piece.Stone_Flat)
                         {
-                            
+                            if ((Piece.GetPlayerID(piece) == 1 && !node.player) || (Piece.GetPlayerID(piece) == 0 && node.player))
+                            {
+                                flatCount++;
+                            }
+                            else
+                            {
+                                //Account for enemy flat stones, making the heuristic a differential rather than a simple count
+                                flatCount--;
+                            }
+                        }
+
+                        //check for highest capstone
+                        if (Piece.GetStone(piece) == Piece.Stone_Cap)
+                        {
+                            if (Piece.GetPlayerID(piece) == 1 && !node.player)
+                            {
+                                maxCapEnemy = node.state.Board[i, j].Count;
+                            }
+                            else if (Piece.GetPlayerID(piece) == 0 && node.player)
+                            {
+                                maxCap = node.state.Board[i, j].Count;
+                            }
                         }
                     }
                 }
-            }*/
+            }
 
-            return 0;
+            //check which (if either) player has the highest capstone
+            if (maxCap > maxCapEnemy)
+                highestCap = 1;
+            else if (maxCap < maxCapEnemy)
+                highestCap = -1;
+
+            positionValue = flatCount * flatCo + highestCap * capCo + losingState * lossCo;
+            return positionValue;
         }
 
         bool changeRoot(GameState newState)

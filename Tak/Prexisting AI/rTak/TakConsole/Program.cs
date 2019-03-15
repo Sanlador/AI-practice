@@ -7,6 +7,9 @@ namespace TakConsole
 {
     class Program
     {
+        //program will run however many games this constant is set to
+        const int gameNum = 1;
+
         static void Main(string[] args)
         {
             TakEngine.Properties.Settings.Default.debug = true;
@@ -41,6 +44,7 @@ namespace TakConsole
 
         static void GameLoop()
         {
+            int gameIterator = 0;
             Random r = new Random();
             var fullauto = new bool[] { false, false };
             fullauto[1] = true;
@@ -67,13 +71,12 @@ namespace TakConsole
                     else
                         Console.WriteLine("O wins");
                     for (int i = 0; i < game.Size; i++)
-                    {/*
-                        for (int j = 0; j < game.Size; j++)
-                        {
-                            Console.WriteLine("Space " + i.ToString() + "," + j.ToString());
-                            foreach (int m in game.Board[i, j])
-                                Console.WriteLine(m);
-                        }*/
+                    
+                    gameIterator++;
+                    //records results of game and resets board
+                    if (gameIterator < gameNum)
+                    {
+                        game = GameState.NewGame(game.Size);
                     }
                 }
                 Console.Write("[T{0}, {1}]: ", game.Ply, (game.Ply & 1) == 0 ? 'X' : 'O');
@@ -93,10 +96,11 @@ namespace TakConsole
                     evaluator.Evaluate(game, out eval, out gameOver);
                     if(!gameOver)
                     {
-                        MCTree tree = new MCTree(game);
-                        Console.WriteLine(tree.maxLen(game));
-                        cmd = tree.MCTS(100);
-
+                        /*MCTree tree = new MCTree(game);
+                        tree.evaluate(tree.root);
+                        cmd = tree.MCTS(20);*/
+                        ABTree tree = new ABTree(game);
+                        cmd = tree.AB(1);
                         //Console.WriteLine("\nMCTree:" + cmd);
                     }
                     else
@@ -233,7 +237,7 @@ namespace TakConsole
             Console.WriteLine("Exiting");
         }
 
-        static void PrintBoard(GameState game, GameState previous = null)
+        public static void PrintBoard(GameState game, GameState previous = null)
         {
             var restoreColor = Console.ForegroundColor;
             BoardPosition pos;
