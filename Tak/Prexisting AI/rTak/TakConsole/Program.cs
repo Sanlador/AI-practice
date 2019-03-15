@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TakEngine;
+using System.IO;
 
 namespace TakConsole
 {
@@ -12,6 +13,7 @@ namespace TakConsole
 
         static void Main(string[] args)
         {
+            
             TakEngine.Properties.Settings.Default.debug = true;
             //var test = TakEngine.Notation.TakPGN.LoadFromFile("example_notation.ptn");
             while (true)
@@ -44,6 +46,8 @@ namespace TakConsole
 
         static void GameLoop()
         {
+            int MCTSWins = 0;
+            int ABWins = 0;
             int gameIterator = 0;
             Random r = new Random();
             var fullauto = new bool[] { false, false };
@@ -68,9 +72,9 @@ namespace TakConsole
                     if (eval == 0)
                         Console.WriteLine("Tie");
                     else if (eval > 0)
-                        Console.WriteLine("X wins");
+                        MCTSWins++;
                     else
-                        Console.WriteLine("O wins");
+                        ABWins++;
                     for (int i = 0; i < game.Size; i++)
                     
                     gameIterator++;
@@ -86,7 +90,7 @@ namespace TakConsole
                 if (fullauto[game.Ply & 1] && !gameOver)
                 {
                     ABTree ABTree = new ABTree(game);
-                    cmd = ABTree.AB(1);
+                    cmd = ABTree.AB(1, 15F);
                     /*
                     cmd = "ai";
                     Console.WriteLine(cmd);*/
@@ -104,7 +108,7 @@ namespace TakConsole
                         if (!tree.changeRoot(game))
                             tree = new MCTree(game);
                         tree.evaluate(tree.root);
-                        cmd = tree.MCTS(50);
+                        cmd = tree.MCTS(15);
                         /*ABTree tree = new ABTree(game);
                         cmd = tree.AB(1);*/
                         //Console.WriteLine("\nMCTree:" + cmd);
@@ -239,7 +243,7 @@ namespace TakConsole
                     }
                 }
             }
-
+            File.AppendAllText("Records/records.csv", MCTSWins.ToString() + "," + ABWins.ToString() + Environment.NewLine);
             Console.WriteLine("Exiting");
         }
 

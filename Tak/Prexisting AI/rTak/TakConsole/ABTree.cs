@@ -111,7 +111,7 @@ namespace TakConsole
             return positionValue;
         }
 
-        public float ABSearch(ABNode node, int ply, int depth, float alpha = float.MinValue, float beta = float.MinValue)
+        public float ABSearch(ABNode node, int ply, int depth, float time, float alpha = float.MinValue, float beta = float.MinValue)
         {
             if (ply > depth)
             {
@@ -125,6 +125,7 @@ namespace TakConsole
             int eval;
             int i = 0;
 
+            time /= moves.Count;
             while (i < moves.Count)
             {
                 IMove m = moves[i];
@@ -143,22 +144,39 @@ namespace TakConsole
                      else
                          return -1000F;
                  }*/
-                float e = ABSearch(n, ply + 1, depth);
-                evaluations.Add(e);
-                if (node.player)    //max
+                var task = Task.Run(() =>
                 {
-                    if (e > alpha)
-                        alpha = e;
-                    if (e > beta)
-                        return e;
-                }
-                if (!node.player)   //min
+                    return ABSearch(n, ply + 1, depth, (float)(time));
+                });
+
+                bool completedOnTime = task.Wait(TimeSpan.FromMilliseconds(time));
+
+                //float e = ABSearch(n, ply + 1, depth);
+                float e = 0;
+                if (completedOnTime)
                 {
-                    if (e < beta)
-                        beta = e;
-                    if (e <= alpha)
-                        return e;
+                    e = task.Result;
+
+                    evaluations.Add(e);
+
+                    //alpha-beta pruning
+                    if (node.player)    //max
+                    {
+                        if (e > alpha)
+                            alpha = e;
+                        if (e > beta)
+                            return e;
+                    }
+                    if (!node.player)   //min
+                    {
+                        if (e < beta)
+                            beta = e;
+                        if (e <= alpha)
+                            return e;
+                    }
                 }
+                else
+                    evaluations.Add(0);
                 i++;
             }
 
@@ -172,7 +190,7 @@ namespace TakConsole
             }
         }
 
-        public string AB(int depth)
+        public string AB(int depth, float time)
         {
             List<IMove> moves = moveOptions(root.state);
             List<float> evaluations = new List<float>();
@@ -196,7 +214,7 @@ namespace TakConsole
                 {
                     return m.Notate();
                 }
-                evaluations.Add(ABSearch((new ABNode(!root.player, tempState)), 0, depth));
+                evaluations.Add(ABSearch((new ABNode(!root.player, tempState)), 0, depth, time));
             }
             
 
